@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php
+  labels:
+    app: php
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: php
+  template:
+    metadata:
+      labels:
+        app: php
+    spec:
+      containers:
+      - name: php
+        image: php:7.4-fpm
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - name: app
+          mountPath: /var/www/app
+        - name: php-ini
+          mountPath: /usr/local/etc/php/php.ini
+          subPath: php.ini
+      volumes:
+      - name: app
+        hostPath:
+          path: /var/www/app
+      - name: php-ini
+        configMap:
+          name: php-ini
