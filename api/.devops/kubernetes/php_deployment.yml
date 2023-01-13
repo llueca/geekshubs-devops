@@ -26,6 +26,13 @@ spec:
         - name: php-ini
           mountPath: /usr/local/etc/php/php.ini
           subPath: php.ini
+      - name: nginx
+        image: nginx:1.19
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: app
+          mountPath: /var/www/app
       volumes:
       - name: app
         hostPath:
