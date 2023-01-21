@@ -26,8 +26,9 @@ class TaskListsController extends Controller
         return response()->noContent(201);
     }
 
-    public function getAllTaskLists() {
-        return $this->taskListsService->getAllTaskLists();
+    public function getAllTaskLists(Request $request) {
+        $user = $request->user();
+        return $user ? $this->taskListsService->getAllTaskLists($user->id) : [];
     }
 
     public function getTaskList(Request $request, string $id): JsonResponse {

@@ -29,4 +29,8 @@ class TaskListsRepository
             ->firstOrFail()
             ->toEntity();
     }
+
+    public function getAllTaskListsByUserId(string $userId) {
+        return TaskList::where('owner_id', $userId)->all()->map(fn($taskList) => $taskList->toEntity());
+    }
 }

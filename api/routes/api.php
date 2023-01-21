@@ -15,11 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::group(['prefix' => 'task-lists'], static function () {
+Route::middleware('auth:sanctum')->get('/user', fn (Request $request) => $request->user());
+Route::middleware('auth:sanctum')->prefix('/task-lists')->group(function () {
     Route::put('/{id:uuid}', [TaskListsController::class, 'createTask']);
     Route::get('/', [TaskListsController::class, 'getAllTaskLists']);
     Route::get('/{id:uuid}', [TaskListsController::class, 'getTaskList']);

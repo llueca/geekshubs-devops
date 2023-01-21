@@ -8,18 +8,6 @@ RUN composer install --no-dev --no-interaction --no-progress --no-scripts --opti
 
 FROM php:8.0.13-fpm-alpine AS production
 
-COPY --from=composer /app/app /app/app
-COPY --from=composer /app/bootstrap /app/bootstrap
-COPY --from=composer /app/config /app/config
-COPY --from=composer /app/database /app/database
-COPY --from=composer /app/public /app/public
-COPY --from=composer /app/resources /app/resources
-COPY --from=composer /app/routes /app/routes
-COPY --from=composer /app/storage /app/storage
-COPY --from=composer /app/artisan /app/artisan
-
-WORKDIR /app
-
 RUN apk update \
     && apk add --update linux-headers \
     && apk add  --no-cache git mysql-client curl libmcrypt libmcrypt-dev openssh-client icu-dev \
@@ -32,6 +20,22 @@ RUN apk update \
 RUN apk add gnu-libiconv --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+
+
+
+COPY --from=composer /app/app /app/app
+COPY --from=composer /app/bootstrap /app/bootstrap
+COPY --from=composer /app/config /app/config
+COPY --from=composer /app/database /app/database
+COPY --from=composer /app/public /app/public
+COPY --from=composer /app/resources /app/resources
+COPY --from=composer /app/routes /app/routes
+COPY --from=composer /app/storage /app/storage
+COPY --from=composer /app/artisan /app/artisan
+
+WORKDIR /app
+
+
 
 USER app
 
